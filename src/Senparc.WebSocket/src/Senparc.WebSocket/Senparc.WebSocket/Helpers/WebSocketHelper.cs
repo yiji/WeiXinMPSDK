@@ -12,15 +12,28 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.WebSockets;
 using System.Text;
+
+
+#if NET461
+using System.Net.WebSockets;
+using System.Web.WebSockets;
+
+#endif
+
+#if NET461
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Routing;
-using System.Web.WebSockets;
+#endif
+
+
 
 namespace Senparc.WebSocket
 {
+    /// <summary>
+    /// WebSocketHelper
+    /// </summary>
     public class WebSocketHelper
     {
         private readonly AspNetWebSocketContext _webSocketContext;
@@ -28,6 +41,11 @@ namespace Senparc.WebSocket
         private readonly CancellationToken _cancellationToken;
 
 
+        /// <summary>
+        /// WebSocketHelper
+        /// </summary>
+        /// <param name="webSocketContext"></param>
+        /// <param name="cancellationToken"></param>
         public WebSocketHelper(AspNetWebSocketContext webSocketContext, CancellationToken cancellationToken)
         {
             _webSocketContext = webSocketContext;
@@ -35,6 +53,11 @@ namespace Senparc.WebSocket
             _cancellationToken = cancellationToken;
         }
 
+        /// <summary>
+        /// 发送消息
+        /// </summary>
+        /// <param name="message">文字消息</param>
+        /// <returns></returns>
         public async Task SendMessage(string message)
         {
             var data = new

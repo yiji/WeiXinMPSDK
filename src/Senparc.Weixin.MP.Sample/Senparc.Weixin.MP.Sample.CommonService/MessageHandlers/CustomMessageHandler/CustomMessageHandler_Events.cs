@@ -71,6 +71,8 @@ QQ群：342319110
 【容错】    体验去重容错
 
 【ex】      体验错误日志推送提醒
+
+【mute】     不返回任何消息，也无出错信息
 ",
                 version);
         }
@@ -105,6 +107,11 @@ QQ群：342319110
             return null;//返回null，则继续执行OnTextRequest或OnEventRequest
         }
 
+        /// <summary>
+        /// 点击事件
+        /// </summary>
+        /// <param name="requestMessage"></param>
+        /// <returns></returns>
         public override IResponseMessageBase OnEvent_ClickRequest(RequestMessageEvent_Click requestMessage)
         {
             IResponseMessageBase reponseMessage = null;
@@ -133,10 +140,22 @@ QQ群：342319110
                         strongResponseMessage.Articles.Add(new Article()
                         {
                             Title = "您点击了子菜单图文按钮",
-                            Description = "您点击了子菜单图文按钮，这是一条图文信息。",
+                            Description = "您点击了子菜单图文按钮，这是一条图文信息。这个区域是Description内容\r\n可以使用\\r\\n进行换行。",
                             PicUrl = "http://sdk.weixin.senparc.com/Images/qrcode.jpg",
                             Url = "http://sdk.weixin.senparc.com"
                         });
+
+                        //随机添加一条图文，或只输出一条图文信息
+                        if (DateTime.Now.Second % 2 == 0)
+                        {
+                            strongResponseMessage.Articles.Add(new Article()
+                            {
+                                Title = "这是随机产生的第二条图文信息，用于测试多条图文的样式",
+                                Description = "这是随机产生的第二条图文信息，用于测试多条图文的样式",
+                                PicUrl = "http://sdk.weixin.senparc.com/Images/qrcode.jpg",
+                                Url = "http://sdk.weixin.senparc.com"
+                            });
+                        }
                     }
                     break;
                 case "SubClickRoot_Music":
@@ -270,6 +289,11 @@ QQ群：342319110
             return reponseMessage;
         }
 
+        /// <summary>
+        /// 进入事件
+        /// </summary>
+        /// <param name="requestMessage"></param>
+        /// <returns></returns>
         public override IResponseMessageBase OnEvent_EnterRequest(RequestMessageEvent_Enter requestMessage)
         {
             var responseMessage = ResponseMessageBase.CreateFromRequestMessage<ResponseMessageText>(requestMessage);
@@ -277,6 +301,11 @@ QQ群：342319110
             return responseMessage;
         }
 
+        /// <summary>
+        /// 位置事件
+        /// </summary>
+        /// <param name="requestMessage"></param>
+        /// <returns></returns>
         public override IResponseMessageBase OnEvent_LocationRequest(RequestMessageEvent_Location requestMessage)
         {
             //这里是微信客户端（通过微信服务器）自动发送过来的位置信息
@@ -285,6 +314,11 @@ QQ群：342319110
             return responseMessage;//这里也可以返回null（需要注意写日志时候null的问题）
         }
 
+        /// <summary>
+        /// 通过二维码扫描关注扫描事件
+        /// </summary>
+        /// <param name="requestMessage"></param>
+        /// <returns></returns>
         public override IResponseMessageBase OnEvent_ScanRequest(RequestMessageEvent_Scan requestMessage)
         {
             //通过扫描关注
@@ -314,6 +348,11 @@ QQ群：342319110
             return responseMessage;
         }
 
+        /// <summary>
+        /// 打开网页事件
+        /// </summary>
+        /// <param name="requestMessage"></param>
+        /// <returns></returns>
         public override IResponseMessageBase OnEvent_ViewRequest(RequestMessageEvent_View requestMessage)
         {
             //说明：这条消息只作为接收，下面的responseMessage到达不了客户端，类似OnEvent_UnsubscribeRequest
@@ -322,6 +361,11 @@ QQ群：342319110
             return responseMessage;
         }
 
+        /// <summary>
+        /// 群发完成事件
+        /// </summary>
+        /// <param name="requestMessage"></param>
+        /// <returns></returns>
         public override IResponseMessageBase OnEvent_MassSendJobFinishRequest(RequestMessageEvent_MassSendJobFinish requestMessage)
         {
             var responseMessage = CreateResponseMessage<ResponseMessageText>();

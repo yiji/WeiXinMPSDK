@@ -1,4 +1,24 @@
-﻿/*----------------------------------------------------------------
+﻿#region Apache License Version 2.0
+/*----------------------------------------------------------------
+
+Copyright 2017 Jeffrey Su & Suzhou Senparc Network Technology Co.,Ltd.
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
+except in compliance with the License. You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under the
+License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. See the License for the specific language governing permissions
+and limitations under the License.
+
+Detail: https://github.com/JeffreySu/WeiXinMPSDK/blob/master/license.md
+
+----------------------------------------------------------------*/
+#endregion Apache License Version 2.0
+
+/*----------------------------------------------------------------
     Copyright (C) 2017 Senparc
   
     文件名：RedPackApi.cs
@@ -156,11 +176,27 @@ PROCESSING	请求已受理，请稍后使用原单号查询发放结果	二十�
             string password = mchId;
 
             //调用证书
-            var cer = new X509Certificate2(cert, password, X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.MachineKeySet);
+            X509Certificate2 cer = new X509Certificate2(cert, password, X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.MachineKeySet);
+#if NET461
+            ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(CheckValidationResult);
 
-            //ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(CheckValidationResult);
-            //X509Certificate cer = new X509Certificate(cert, password);
+            #region 发起post请求
+            HttpWebRequest webrequest = (HttpWebRequest)HttpWebRequest.Create(url);
+            webrequest.ClientCertificates.Add(cer);
+            webrequest.Method = "post";
 
+
+            byte[] postdatabyte = Encoding.UTF8.GetBytes(data);
+            webrequest.ContentLength = postdatabyte.Length;
+            Stream stream = webrequest.GetRequestStream();
+            stream.Write(postdatabyte, 0, postdatabyte.Length);
+            stream.Close();
+
+            HttpWebResponse httpWebResponse = (HttpWebResponse)webrequest.GetResponse();
+            StreamReader streamReader = new StreamReader(httpWebResponse.GetResponseStream());
+            string response = streamReader.ReadToEnd();
+            #endregion
+#else
             #region 发起post请求
             HttpClientHandler handler = new HttpClientHandler();
             handler.ClientCertificates.Add(cer);
@@ -170,7 +206,7 @@ PROCESSING	请求已受理，请稍后使用原单号查询发放结果	二十�
             var request = client.PostAsync(url, hc).Result;
             var response = request.Content.ReadAsStreamAsync().Result;
             #endregion
-
+#endif
             XmlDocument doc = new XmlDocument();
             doc.Load(response);
 
@@ -364,11 +400,27 @@ PROCESSING	请求已受理，请稍后使用原单号查询发放结果	二十�
             string password = mchId;
 
             //调用证书
-            var cer = new X509Certificate2(cert, password, X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.MachineKeySet);
+            X509Certificate2 cer = new X509Certificate2(cert, password, X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.MachineKeySet);
+#if NET461
+            ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(CheckValidationResult);
 
-            //ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(CheckValidationResult);
-            //X509Certificate cer = new X509Certificate(cert, password);
+            #region 发起post请求
+            HttpWebRequest webrequest = (HttpWebRequest)HttpWebRequest.Create(url);
+            webrequest.ClientCertificates.Add(cer);
+            webrequest.Method = "post";
 
+
+            byte[] postdatabyte = Encoding.UTF8.GetBytes(data);
+            webrequest.ContentLength = postdatabyte.Length;
+            Stream stream = webrequest.GetRequestStream();
+            stream.Write(postdatabyte, 0, postdatabyte.Length);
+            stream.Close();
+
+            HttpWebResponse httpWebResponse = (HttpWebResponse)webrequest.GetResponse();
+            StreamReader streamReader = new StreamReader(httpWebResponse.GetResponseStream());
+            string response = streamReader.ReadToEnd();
+            #endregion
+#else
             #region 发起post请求
             HttpClientHandler handler = new HttpClientHandler();
             handler.ClientCertificates.Add(cer);
@@ -378,6 +430,7 @@ PROCESSING	请求已受理，请稍后使用原单号查询发放结果	二十�
             var request = client.PostAsync(url, hc).Result;
             var response = request.Content.ReadAsStreamAsync().Result;
             #endregion
+#endif
 
             XmlDocument doc = new XmlDocument();
             doc.Load(response);
@@ -516,11 +569,27 @@ PROCESSING	请求已受理，请稍后使用原单号查询发放结果	二十�
             string password = mchId;
 
             //调用证书
-            var cer = new X509Certificate2(cert, password, X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.MachineKeySet);
+            X509Certificate2 cer = new X509Certificate2(cert, password, X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.MachineKeySet);
+#if NET461
+            ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(CheckValidationResult);
 
-            //ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(CheckValidationResult);
-            //X509Certificate cer = new X509Certificate(cert, password);
+            #region 发起post请求
+            HttpWebRequest webrequest = (HttpWebRequest)HttpWebRequest.Create(url);
+            webrequest.ClientCertificates.Add(cer);
+            webrequest.Method = "post";
 
+
+            byte[] postdatabyte = Encoding.UTF8.GetBytes(data);
+            webrequest.ContentLength = postdatabyte.Length;
+            Stream stream = webrequest.GetRequestStream();
+            stream.Write(postdatabyte, 0, postdatabyte.Length);
+            stream.Close();
+
+            HttpWebResponse httpWebResponse = (HttpWebResponse)webrequest.GetResponse();
+            StreamReader streamReader = new StreamReader(httpWebResponse.GetResponseStream());
+            string response = streamReader.ReadToEnd();
+            #endregion
+#else
             #region 发起post请求
             HttpClientHandler handler = new HttpClientHandler();
             handler.ClientCertificates.Add(cer);
@@ -530,6 +599,7 @@ PROCESSING	请求已受理，请稍后使用原单号查询发放结果	二十�
             var request = client.PostAsync(url, hc).Result;
             var response = request.Content.ReadAsStreamAsync().Result;
             #endregion
+#endif
 
             XmlDocument doc = new XmlDocument();
             doc.Load(response);
